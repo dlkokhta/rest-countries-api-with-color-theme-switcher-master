@@ -8,7 +8,9 @@ const Input = () => {
   const [inputValue, setInputValue] = useState("");
   const [entireInputValue, setEntireInputValue] = useState("");
   const [regioFilterIsHide, setRegioFilterIsHide] = useState(false);
-  const [selectedRegione, setSelectedRegione] = useState("");
+  const [selectedRegione, setSelectedRegione] = useState(null);
+
+  console.log(entireInputValue);
 
   const allData = useSelector((store) => store.allData);
   console.log(allData);
@@ -26,6 +28,10 @@ const Input = () => {
   const regionClickhandler = (region) => {
     setSelectedRegione(region);
   };
+
+  setTimeout(() => {
+    setRegioFilterIsHide(false);
+  }, 3000);
 
   return (
     <div className="mt-6 pl-4 pr-4">
@@ -90,24 +96,28 @@ const Input = () => {
       </div>
       {/**it contains all countries */}
       <div>
-        {allData.data.map((country, index) => (
-          <div key={index} className="mt-6 flex flex-col gap-10 pl-10 pr-10 ">
-            <Link to={"/details/" + country.name.common}>
-              <div className="bg-[#2B3844] flex flex-col pb-11">
-                <img className="h-[160px]" src={country.flags.png} />
+        {allData.data
+          .filter(
+            (country) => !selectedRegione || country.region === selectedRegione
+          )
+          .map((country, index) => (
+            <div key={index} className="mt-6 flex flex-col gap-10 pl-10 pr-10 ">
+              <Link to={"/details/" + country.name.common}>
+                <div className="bg-[#2B3844] flex flex-col pb-11">
+                  <img className="h-[160px]" src={country.flags.png} />
 
-                <div className=" font-nunito text-white font-extrabold text-lg leading-7 pt-6 pl-6 pb-4 ">
-                  {country.name.common}
+                  <div className=" font-nunito text-white font-extrabold text-lg leading-7 pt-6 pl-6 pb-4 ">
+                    {country.name.common}
+                  </div>
+                  <div className="flex flex-col pl-6 text-white">
+                    <div> Population: {country.population}</div>
+                    <div> Region: {country.region}</div>
+                    <div> Capital: {country.region}</div>
+                  </div>
                 </div>
-                <div className="flex flex-col pl-6 text-white">
-                  <div> Population: {country.population}</div>
-                  <div> Region: {country.region}</div>
-                  <div> Capital: {country.region}</div>
-                </div>
-              </div>
-            </Link>
-          </div>
-        ))}
+              </Link>
+            </div>
+          ))}
       </div>
     </div>
   );
