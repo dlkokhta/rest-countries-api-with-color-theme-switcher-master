@@ -2,21 +2,29 @@ import { useDispatch, useSelector } from "react-redux";
 import { setMode } from "../store/modeSlice";
 
 const Header = () => {
-  const mode1 = useSelector((store) => store.mode.Boolean);
+  const changeMode = useSelector((store) => store.mode.Boolean);
 
   const dispatch = useDispatch();
 
   const modeChnageHandler = () => {
-    dispatch(setMode(!mode1));
+    dispatch(setMode(!changeMode));
   };
   return (
-    <div className="bg-[#2B3844] flex items-center justify-between pt-[30px] pr-[16px] pb-[30px] pl-[16px]">
-      <h1 className="text-[white] font-nunito  font-extrabold text-sm  ">
+    <div
+      className={`${
+        changeMode ? "bg-[#2B3844]" : "bg-[#ffffff]"
+      }  flex items-center justify-between pt-[30px] pr-[16px] pb-[30px] pl-[16px] xl:pl-20`}
+    >
+      <h1
+        className={`${
+          changeMode ? "text-[white] " : "text-[#111517]"
+        }  font-nunito  font-extrabold text-sm xl:text-2xl `}
+      >
         Where is the world?
       </h1>
-      <div className="flex gap-2 items-center">
+      <div className="flex gap-2 items-center xl:pr-20">
         {/**moon icon */}
-        {mode1 && (
+        {changeMode && (
           <svg
             xmlns="http://www.w3.org/2000/svg"
             width="22"
@@ -33,10 +41,10 @@ const Header = () => {
           </svg>
         )}
         {/**sun icon */}
-        {!mode1 && (
+        {!changeMode && (
           <svg
             xmlns="http://www.w3.org/2000/svg"
-            fill="white"
+            fill="dark"
             viewBox="0 0 50 50"
             width="22"
             height="22"
@@ -45,7 +53,9 @@ const Header = () => {
           </svg>
         )}
         <h2
-          className="text-[white] font-nunito-sans font-semibold text-xs leading-4"
+          className={` ${
+            changeMode ? "text-[white]" : "text-[#111517]"
+          } font-nunito-sans font-semibold text-xs leading-4 `}
           onClick={modeChnageHandler}
         >
           Dark Mode

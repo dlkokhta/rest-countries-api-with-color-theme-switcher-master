@@ -9,11 +9,19 @@ const Input = () => {
   const [entireInputValue, setEntireInputValue] = useState("");
   const [regioFilterIsHide, setRegioFilterIsHide] = useState(false);
   const [selectedRegione, setSelectedRegione] = useState(null);
-
-  console.log(entireInputValue);
+  const changeMode = useSelector((store) => store.mode.Boolean);
 
   const allData = useSelector((store) => store.allData);
-  console.log(allData);
+
+  const filteredCountries = allData.data
+    .filter((country) => !selectedRegione || country.region === selectedRegione)
+    .filter(
+      (country) =>
+        !entireInputValue ||
+        country.name.common
+          .toLowerCase()
+          .includes(entireInputValue.toLowerCase())
+    );
 
   const inputOnchaneHandler = (event) => {
     setInputValue(event.target.value);
@@ -31,12 +39,16 @@ const Input = () => {
 
   setTimeout(() => {
     setRegioFilterIsHide(false);
-  }, 3000);
+  }, 10000);
 
   return (
-    <div className="mt-6 pl-4 pr-4">
+    <div className="mt-6  ">
       {/**Input */}
-      <div className="bg-[#2B3844] flex items-center pt-4 pr-4 pb-4 pl-8 gap-6 rounded-md">
+      <div
+        className={`${
+          changeMode ? "bg-[#2B3844]" : "bg-[#ffffff]"
+        } flex items-center pt-4 pr-4 pb-4 pl-8 gap-6 rounded-md mx-4 `}
+      >
         {/**Search icon */}
         <svg
           onClick={inputSubmitHandler}
@@ -47,7 +59,7 @@ const Input = () => {
         >
           <path
             fill="none"
-            stroke="white"
+            stroke={changeMode ? "white" : "#B2B2B2"}
             strokeLinecap="round"
             strokeLinejoin="round"
             strokeWidth="1.5"
@@ -56,15 +68,26 @@ const Input = () => {
         </svg>
         <input
           onChange={inputOnchaneHandler}
-          className=" placeholder-gray outline-none bg-transparent text-white text-sm items-center w-full "
+          className={`${
+            changeMode ? "text-[#ffffff] " : "text-black"
+          }  outline-none bg-transparent  text-sm items-center w-full`}
           placeholder="Search for a country..."
         />
       </div>
       {/**Filter */}
-      <div className="relative bg-[#2B3844] mt-10 mr-[134px]  flex items-center justify-between pt-4 pr-4 pb-4 pl-6 rounded-md ">
-        <h1 className="text-white text-sm font-nunito font-normal">
+      <div
+        className={`${
+          changeMode ? "bg-[#2B3844] " : "bg-[white]"
+        }max-w-[210px] relative mt-10 mr-[134px]  flex items-center justify-between pt-4 pr-4 pb-4 pl-6 rounded-md ml-4 mb-8`}
+      >
+        <h1
+          className={`${
+            changeMode ? "text-[#ffffff]" : "text-[#111517]"
+          } text-sm font-nunito font-normal`}
+        >
           Filter by Region
         </h1>
+
         {/**Arrow down icon */}
         <svg
           className="duration-1000"
@@ -74,18 +97,29 @@ const Input = () => {
           height="8"
           viewBox="0 0 14 8"
         >
-          <path fill="none" stroke="white" strokeWidth="1.5" d="m1 1 6 6 6-6" />
+          <path
+            fill="none"
+            stroke={changeMode ? "white" : "#B2B2B2"}
+            strokeWidth="1.5"
+            d="m1 1 6 6 6-6"
+          />
         </svg>
         {/**menu of regios, filter unique regions from allData*/}
         {regioFilterIsHide && (
-          <div className="absolute bg-[#2B3844] pt-4 pr-32 pl-6 pb-4 flex flex-col gap-2 top-14 right-0 rounded-md ">
+          <div
+            className={` ${
+              changeMode ? "bg-[#2B3844]" : "bg-[#ffffff]"
+            } absolute pt-4 pr-32 pl-6 pb-4 flex flex-col gap-2 top-14 right-0 rounded-md `}
+          >
             {allData.data
               .map((item) => item.region)
               .filter((region, index, self) => self.indexOf(region) === index)
               .map((region, index) => (
                 <div
                   onClick={() => regionClickhandler(region)}
-                  className="text-white text-sm font-nunito font-normal"
+                  className={`${
+                    changeMode ? "text-[#ffffff]" : "text-black"
+                  } text-sm font-nunito font-normal`}
                   key={index}
                 >
                   {region}
@@ -95,21 +129,33 @@ const Input = () => {
         )}
       </div>
       {/**it contains all countries */}
-      <div>
-        {allData.data
-          .filter(
-            (country) => !selectedRegione || country.region === selectedRegione
-          )
+      <div className="flex flex-col items-center md:flex-wrap md: w-1/1 ">
+        {filteredCountries
+          // .filter(
+          //   (country) => !selectedRegione || country.region === selectedRegione
+          // )
           .map((country, index) => (
-            <div key={index} className="mt-6 flex flex-col gap-10 pl-10 pr-10 ">
-              <Link to={"/details/" + country.name.common}>
-                <div className="bg-[#2B3844] flex flex-col pb-11">
+            <div key={index} className=" mb-10  w-[264px]">
+              <Link to={"/details/" + country.cca3}>
+                <div
+                  className={`${
+                    changeMode ? "bg-[#2B3844]" : "bg-[#ffffff]"
+                  } flex flex-col pb-11 w-[264px]`}
+                >
                   <img className="h-[160px]" src={country.flags.png} />
 
-                  <div className=" font-nunito text-white font-extrabold text-lg leading-7 pt-6 pl-6 pb-4 ">
+                  <div
+                    className={`${
+                      changeMode ? "text-[#ffffff] " : "text-black"
+                    } font-nunito font-extrabold text-lg leading-7 pt-6 pl-6 pb-4 `}
+                  >
                     {country.name.common}
                   </div>
-                  <div className="flex flex-col pl-6 text-white">
+                  <div
+                    className={`${
+                      changeMode ? "text-[#ffffff] " : "text-black"
+                    }   flex flex-col pl-6`}
+                  >
                     <div> Population: {country.population}</div>
                     <div> Region: {country.region}</div>
                     <div> Capital: {country.region}</div>

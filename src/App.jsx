@@ -7,9 +7,11 @@ import axios from "axios";
 import { setData } from "./store/allDataSlice";
 import { useDispatch } from "react-redux";
 import { useEffect } from "react";
+import { useSelector } from "react-redux";
 
 function App() {
   const allDataDispatch = useDispatch();
+  const changeMode = useSelector((store) => store.mode.Boolean);
 
   const fetcheData = async () => {
     try {
@@ -26,7 +28,13 @@ function App() {
   }, []);
 
   return (
-    <div className="bg-[#202C36] ">
+    <div
+      className={`${
+        changeMode
+          ? "bg-[#202C36] duration-500"
+          : "bg-[hsl(90,10%,96%)] duration-500"
+      } max-h-display`}
+    >
       <Header />
       <Test />
       <Routes>

@@ -1,44 +1,37 @@
 import { useParams } from "react-router-dom";
 import { useSelector } from "react-redux";
-import { setData } from "../store/allDataSlice";
 import { Link } from "react-router-dom";
+import { useEffect } from "react";
+import { useState } from "react";
+
 const CountryDetails = () => {
   const { country } = useParams();
 
   const allData = useSelector((store) => store.allData);
+  const changeMode = useSelector((store) => store.mode.Boolean);
 
-  //   console.log("useParams", country);
+  const [selectedCountry, setSelectedCountry] = useState(null);
 
-  //   const data = allData.find((country) =>
-  //     country.find((name) => name.name.common === country)
-  //   );
-  //   console.log(country);
-  console.log(allData);
+  useEffect(() => {
+    const borderCountry = allData.data.find(
+      (data) => data.cca3 && data.cca3.toUpperCase() === country.toUpperCase()
+    );
 
-  const selectedCountry = allData.data.find(
-    (data) => data.name.common.toLowerCase() === country.toLowerCase()
-  );
+    setSelectedCountry(borderCountry);
+  }, [allData]);
 
-  console.log("selectedCountry", selectedCountry);
-  //   const selectedCountry = allData.find(
-  //     (c) => c.name.common.toUpperCase() === country.toUpperCase()
-  //   );
-
-  //   const selectedCountry = allData.find(
-  //     (data) => data.map((name) => name.name) === country
-  //   );
-
-  //   const data = allData.map((countryArray) =>
-  //     countryArray.map((country) => <img src={country.flags.png} />)
-  //   );
-
-  //   console.log("alldataFrom countryDetails", data);
+  const borderCountryClickhandler = (border) => {
+    const borderCountry = allData.data.find(
+      (data) => data.cca3 && data.cca3 === border
+    );
+    setSelectedCountry(borderCountry);
+  };
 
   return (
-    <div className="flex flex-col pt-10 pl-7 pr-7">
+    <div className="flex flex-col pt-10 pl-7 pr-7 pb-24 xl:pl-20 ">
       {/**back button */}
       <Link to={"/"}>
-        <div className="flex flex-row gap-2 items-center pt-2 pb-2 pl-6 mr-[210px] mb-16 bg-[#2B3844] ">
+        <div className="flex flex-row gap-2 items-center pt-2 pb-2 pl-6 mr-[210px] mb-16 bg-[#2B3844] max-w-[140px] ">
           <svg
             fill="white"
             height="18px"
@@ -59,61 +52,72 @@ const CountryDetails = () => {
         </div>
       </Link>
       {/**country details */}
+      {selectedCountry && (
+        <div className="flex flex-col">
+          {/**flag */}
+          <div>
+            <img
+              className="h-[230px] max-w-[320px]"
+              src={selectedCountry.flags.png}
+              alt={selectedCountry.name.common}
+            />
+          </div>
+          {/**info1 */}
+          <div className="mt-11">
+            <div className="text-white text-2xl font-nunito font-extrabold ">
+              {selectedCountry.name.common}
+            </div>
 
-      <div className="flex flex-col">
-        {/**flag */}
-        <div>
-          <img className="h-[276px]" src={selectedCountry.flags.png} />
+            <div className="text-white font-nunito text-sm leading-8">
+              Native Name: {selectedCountry.name.common}
+            </div>
+
+            <div className="text-white font-nunito text-sm leading-8">
+              Population: {selectedCountry.population}
+            </div>
+            <div className="text-white font-nunito text-sm leading-8">
+              Region: {selectedCountry.region}
+            </div>
+            <div className="text-white font-nunito text-sm leading-8">
+              Sub Region: {selectedCountry.subregion}
+            </div>
+            <div className="text-white font-nunito text-sm leading-8">
+              Capital: {selectedCountry.capital}
+            </div>
+          </div>
+          {/**info2 */}
+          <div className="mt-8">
+            <div className="text-white font-nunito text-sm leading-8">
+              Top Level Domain: {selectedCountry.tld}
+            </div>
+            <div className="text-white font-nunito text-sm leading-8">
+              Currencies: {/* need to map over the currencies object here */}
+            </div>
+            <div className="text-white font-nunito text-sm leading-8">
+              Languages: {/* need to map over the languages object here */}
+            </div>
+          </div>
         </div>
-        {/**info1 */}
-        <div className="mt-11">
-          <div className="text-white text-2xl font-nunito font-extrabold ">
-            {selectedCountry.name.common}
-          </div>
+      )}
 
-          <div className="text-white font-nunito text-sm leading-8">
-            Native Name: {selectedCountry.name.common}
-          </div>
-
-          <div className="text-white font-nunito text-sm leadnig-8"></div>
-
-          <div className="text-white font-nunito text-sm leading-8">
-            Population: {selectedCountry.population}
-          </div>
-          <div className="text-white font-nunito text-sm leading-8">
-            Region: {selectedCountry.region}
-          </div>
-          <div className="text-white font-nunito text-sm leading-8">
-            Sub Region: {selectedCountry.subregion}
-          </div>
-          <div className="text-white font-nunito text-sm leading-8">
-            Capital: {selectedCountry.capital}
-          </div>
-        </div>
-        {/**info2 */}
-        <div className="mt-8">
-          <div className="text-white font-nunito text-sm leading-8">
-            Top Level Domain: {selectedCountry.tld}
-          </div>
-          <div className="text-white font-nunito text-sm leading-8">
-            Currencies
-          </div>
-          <div className="text-white font-nunito text-sm leading-8">
-            Languages:
-          </div>
-        </div>
-      </div>
       {/**info2 */}
       <div>
         <div className="text-white font-nunito mt-6 mb-4 font-semibold">
           Border Countries:
         </div>
-        <div className="text-white   grid grid-cols-3 gap-2">
-          {selectedCountry.borders.map((border) => (
-            <div className=" bg-[#2B3844] flex items-center justify-center py-2 font-nunito font-light text-sm ">
-              {border}
-            </div>
-          ))}
+
+        <div className="text-white grid grid-cols-3 gap-2">
+          {selectedCountry &&
+            selectedCountry.borders &&
+            selectedCountry.borders.map((border, index) => (
+              <div
+                key={index}
+                onClick={() => borderCountryClickhandler(border)}
+                className=" bg-[#2B3844] flex items-center justify-center py-2 font-nunito font-light text-sm "
+              >
+                {border}
+              </div>
+            ))}
         </div>
       </div>
     </div>
