@@ -43,99 +43,103 @@ const Input = () => {
 
   return (
     <div className="mt-6  ">
-      {/**Input */}
-      <div
-        className={`${
-          changeMode ? "bg-[#2B3844]" : "bg-[#ffffff]"
-        } flex items-center pt-4 pr-4 pb-4 pl-8 gap-6 rounded-md mx-4 `}
-      >
-        {/**Search icon */}
-        <svg
-          onClick={inputSubmitHandler}
-          xmlns="http://www.w3.org/2000/svg"
-          width="18"
-          height="18"
-          viewBox="0 0 18 18"
-        >
-          <path
-            fill="none"
-            stroke={changeMode ? "white" : "#B2B2B2"}
-            strokeLinecap="round"
-            strokeLinejoin="round"
-            strokeWidth="1.5"
-            d="m12.663 12.663 3.887 3.887M1 7.664a6.665 6.665 0 1 0 13.33 0 6.665 6.665 0 0 0-13.33 0Z"
-          />
-        </svg>
-        <input
-          onChange={inputOnchaneHandler}
+      {/**Input  && Filter container*/}
+      <div className=" xl:flex  xl:justify-between xl:px-20 xl:my-11  xl:h-[56px] xl:items-center ">
+        {/**Input */}
+        <div
           className={`${
-            changeMode ? "text-[#ffffff] " : "text-black"
-          }  outline-none bg-transparent  text-sm items-center w-full`}
-          placeholder="Search for a country..."
-        />
-      </div>
-      {/**Filter */}
-      <div
-        className={`${
-          changeMode ? "bg-[#2B3844] " : "bg-[white]"
-        }max-w-[210px] relative mt-10 mr-[134px]  flex items-center justify-between pt-4 pr-4 pb-4 pl-6 rounded-md ml-4 mb-8`}
-      >
-        <h1
-          className={`${
-            changeMode ? "text-[#ffffff]" : "text-[#111517]"
-          } text-sm font-nunito font-normal`}
+            changeMode ? "bg-[#2B3844]" : "bg-[#ffffff]"
+          } flex items-center pt-4 pr-4 pb-4 pl-8 gap-6 rounded-md mx-4 xl:m-0  xl:w-[480px] `}
         >
-          Filter by Region
-        </h1>
-
-        {/**Arrow down icon */}
-        <svg
-          className="duration-1000"
-          onClick={regionFilterMenuhandler}
-          xmlns="http://www.w3.org/2000/svg"
-          width="14"
-          height="8"
-          viewBox="0 0 14 8"
-        >
-          <path
-            fill="none"
-            stroke={changeMode ? "white" : "#B2B2B2"}
-            strokeWidth="1.5"
-            d="m1 1 6 6 6-6"
-          />
-        </svg>
-        {/**menu of regios, filter unique regions from allData*/}
-        {regioFilterIsHide && (
-          <div
-            className={` ${
-              changeMode ? "bg-[#2B3844]" : "bg-[#ffffff]"
-            } absolute pt-4 pr-32 pl-6 pb-4 flex flex-col gap-2 top-14 right-0 rounded-md `}
+          {/**Search icon */}
+          <svg
+            onClick={inputSubmitHandler}
+            xmlns="http://www.w3.org/2000/svg"
+            width="18"
+            height="18"
+            viewBox="0 0 18 18"
           >
-            {allData.data
-              .map((item) => item.region)
-              .filter((region, index, self) => self.indexOf(region) === index)
-              .map((region, index) => (
-                <div
-                  onClick={() => regionClickhandler(region)}
-                  className={`${
-                    changeMode ? "text-[#ffffff]" : "text-black"
-                  } text-sm font-nunito font-normal`}
-                  key={index}
-                >
-                  {region}
-                </div>
-              ))}
-          </div>
-        )}
+            <path
+              fill="none"
+              stroke={changeMode ? "white" : "#B2B2B2"}
+              strokeLinecap="round"
+              strokeLinejoin="round"
+              strokeWidth="1.5"
+              d="m12.663 12.663 3.887 3.887M1 7.664a6.665 6.665 0 1 0 13.33 0 6.665 6.665 0 0 0-13.33 0Z"
+            />
+          </svg>
+          <input
+            onChange={inputOnchaneHandler}
+            className={`${
+              changeMode ? "text-[#ffffff] " : "text-black"
+            }  outline-none bg-transparent  text-sm items-center w-full`}
+            placeholder="Search for a country..."
+          />
+        </div>
+        {/**Filter */}
+        <div
+          className={`${
+            changeMode ? "bg-[#2B3844] " : "bg-[#ffffff]"
+          } max-w-[210px] relative mt-10 mr-[134px]  flex items-center justify-between pt-4 pr-4 pb-4 pl-6 rounded-md ml-4 mb-8
+           xl:mr-0 xl:flex xl:py-4 xl:px-5 xl:gap-14 text-base `}
+        >
+          <h1
+            className={`${
+              changeMode ? "text-[#ffffff]" : "text-[#111517]"
+            } text-sm font-nunito font-normal`}
+          >
+            Filter by Region
+          </h1>
+
+          {/**Arrow down icon */}
+          <svg
+            className="duration-1000"
+            onClick={regionFilterMenuhandler}
+            xmlns="http://www.w3.org/2000/svg"
+            width="14"
+            height="8"
+            viewBox="0 0 14 8"
+          >
+            <path
+              fill="none"
+              style={{ stroke: changeMode ? "white" : "#B2B2B2" }}
+              strokeWidth="1.5"
+              d="m1 1 6 6 6-6"
+            />
+          </svg>
+          {/**menu of regios, filter unique regions from allData*/}
+          {regioFilterIsHide && (
+            <div
+              className={`${
+                changeMode ? "bg-[#2B3844]" : "bg-white"
+              } absolute pt-4 pr-32 pl-6 pb-4 flex flex-col gap-2 top-14 right-0 rounded-md `}
+            >
+              {allData.data
+                .map((item) => item.region)
+                .filter((region, index, self) => self.indexOf(region) === index)
+                .map((region, index) => (
+                  <div
+                    onClick={() => regionClickhandler(region)}
+                    className={`${
+                      changeMode ? "text-[#ffffff]" : "text-black"
+                    } text-sm font-nunito font-normal`}
+                    key={index}
+                  >
+                    {region}
+                  </div>
+                ))}
+            </div>
+          )}
+        </div>
       </div>
       {/**it contains all countries */}
-      <div className="flex flex-col items-center md:flex-wrap md: w-1/1 ">
+      <div className="xl:px-20 w-full grid  justify-items-center items-center gap-y-10 md:grid-cols-2 lg:grid-cols-3 xl:grid-cols-4 xl:gap-x-16 xl:gap-y-16">
         {filteredCountries
           // .filter(
           //   (country) => !selectedRegione || country.region === selectedRegione
           // )
           .map((country, index) => (
-            <div key={index} className=" mb-10  w-[264px]">
+            <div key={index} className="  w-[264px]">
               <Link to={"/details/" + country.cca3}>
                 <div
                   className={`${
