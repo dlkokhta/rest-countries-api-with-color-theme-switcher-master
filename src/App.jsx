@@ -31,7 +31,7 @@ function App() {
     <div
       className={`${
         changeMode
-          ? "bg-[#202C36] duration-500"
+          ? "bg-[#202C36] min-h-full  duration-500"
           : "bg-[hsl(90,10%,96%)] duration-500"
       } max-h-display`}
     >

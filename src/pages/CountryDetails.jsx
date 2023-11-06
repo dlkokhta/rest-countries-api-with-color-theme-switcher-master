@@ -28,7 +28,7 @@ const CountryDetails = () => {
   };
 
   return (
-    <div className="flex flex-col pt-10 pl-7 pr-7 pb-24 xl:pl-20  ">
+    <div className="flex flex-col pt-10 pl-7 pr-7 pb-24 xl:pl-20  xl:pb-96 ">
       {/**back button */}
       <Link to={"/"}>
         <div
